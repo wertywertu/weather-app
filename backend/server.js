@@ -6,7 +6,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: "*" }));
+
+const API_KEY = process.env.OPENWEATHER_API_KEY;
+console.log("OPENWEATHER_API_KEY =", API_KEY);
 
 app.get("/weather", async (req, res) => {
   const city = req.query.city;
