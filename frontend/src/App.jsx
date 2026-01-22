@@ -1,30 +1,31 @@
 import { useState, useEffect } from "react";
 
-const [backendStatus, setBackendStatus] = useState("loading");
+function App() {
 
-useEffect(() => {
-  const checkBackend = async () => {
-    try {
-      const res = await fetch(
-        "https://weather-app-server-u06w.onrender.com/health",
-        { cache: "no-store" }
-      );
+  const [backendStatus, setBackendStatus] = useState("loading");
 
-      if (res.ok) {
-        setBackendStatus("online");
-      } else {
+  useEffect(() => {
+    const checkBackend = async () => {
+      try {
+        const res = await fetch(
+          "https://weather-app-server-u06w.onrender.com/health",
+          { cache: "no-store" }
+        );
+
+        if (res.ok) {
+          setBackendStatus("online");
+        } else {
+          setBackendStatus("offline");
+        }
+
+      } catch {
         setBackendStatus("offline");
       }
+    };
 
-    } catch {
-      setBackendStatus("offline");
-    }
-  };
+    checkBackend();
+  }, []);
 
-  checkBackend();
-}, []);
-
-function App() {
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState("");
@@ -132,10 +133,10 @@ function App() {
       <div className="fixed bottom-4 right-4 text-xs opacity-70 flex items-center gap-2">
         <span
           className={`w-2 h-2 rounded-full ${backendStatus === "online"
-              ? "bg-green-400"
-              : backendStatus === "loading"
-                ? "bg-yellow-400 animate-pulse"
-                : "bg-red-400"
+            ? "bg-green-400"
+            : backendStatus === "loading"
+              ? "bg-yellow-400 animate-pulse"
+              : "bg-red-400"
             }`}
         ></span>
 
